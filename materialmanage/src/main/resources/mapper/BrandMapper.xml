@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.BrandDao">
+	<cache/>
+	<select id="selectById" resultType="Brand">
+		SELECT brandId, terminalType, manufacturer, terminalModel, property, networkMode, 
+		isRouterSupported, license,	enterTime, remark
+		FROM brand WHERE brandId = #{brandId}
+	</select>
+	<select id="selectByCondition" parameterType="BrandQuery" resultType="Brand">
+		SELECT brandId, terminalType, manufacturer, terminalModel, property, networkMode, 
+		isRouterSupported, license,	enterTime, remark
+		FROM brand
+		<where>
+			<if test="terminalTypeList != null and terminalTypeList.size > 0">
+				AND terminalType IN 
+				<foreach collection="terminalTypeList" item="terminalTypeItem" open="(" separator="," close=")">
+					#{terminalTypeItem}
+				</foreach>
+			</if>
+			<if test="manufacturerList != null and manufacturerList.size > 0">
+				AND 
+				<foreach collection="manufacturerList" item="manufacturerItem" open="(" separator="OR" close=")">
+					manufacturer LIKE CONCAT('%',#{manufacturerItem},'%')
+				</foreach>
+			</if>
+			<if test="terminalModel != null and terminalModel != ''">
+				AND terminalModel LIKE CONCAT('%',#{terminalModel},'%')
+			</if>
+			<if test="property != null and property != ''">
+				AND property LIKE CONCAT('%',#{property},'%')
+			</if>
+			<if test="networkModeList != null and networkModeList.size > 0">
+				AND networkMode IN 
+				<foreach collection="networkModeList" item="networkModeItem" open="(" separator="," close=")">
+					#{networkModeItem}
+				</foreach>
+			</if>
+			<if test="isRouterSupported != null">
+				AND isRouterSupported = #{isRouterSupported}
+			</if>
+			<if test="license != null and license != ''">
+				AND license LIKE CONCAT('%',#{license},'%')
+			</if>
+			<if test="enterTime != null and enterTime != ''">
+				AND enterTime LIKE CONCAT('%',#{enterTime},'%')
+			</if>
+		</where>
+	</select>
+	<insert id="addOne" parameterType="Brand">
+		INSERT INTO brand(terminalType, manufacturer, terminalModel, property, networkMode, 
+		isRouterSupported, license,	enterTime, remark) 
+		VALUES(#{terminalType}, #{manufacturer}, #{terminalModel}, #{property}, #{networkMode},
+		#{isRouterSupported}, #{license}, #{enterTime}, #{remark})
+	</insert>
+	<insert id="addList" parameterType="Brand">
+		INSERT INTO brand(terminalType, manufacturer, terminalModel, property, networkMode, 
+		isRouterSupported, license,	enterTime, remark) VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{terminalType}, #{manufacturer}, #{terminalModel}, #{property}, #{networkMode},
+			#{isRouterSupported}, #{license}, #{enterTime}, #{remark})
+		</foreach>
+	</insert>
+	<delete id="deleteById">
+		DELETE FROM brand WHERE brandId = #{brandId}
+	</delete>
+</mapper>

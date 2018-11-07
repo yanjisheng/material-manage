@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.StockRecycleDao">
+	<resultMap id="StockRecycleMap" type="StockRecycle">
+		<id column="stockRecycleId" property="stockRecycleId"/>
+		<association column="operatorId" property="operator" javaType="User" 
+				select="com.zznode.materialmanage.dao.UserDao.selectById"/>
+		<association column="installerId" property="installer" javaType="User" 
+				select="com.zznode.materialmanage.dao.UserDao.selectById"/>
+		<association column="warehouseId" property="warehouse" javaType="Warehouse"
+				select="com.zznode.materialmanage.dao.WarehouseDao.selectById"/>
+	</resultMap>
+	<insert id="addStockRecycle" parameterType="StockRecycle">
+		INSERT INTO stock_recycle(operatorId, installerId, terminalSn, operateTime, customerAccount, recycleTime, warehouseId, remark)
+		VALUES(#{operatorId}, #{installerId}, #{terminalSn}, #{operateTime}, #{customerAccount}, #{recycleTime}, #{warehouseId}, #{remark})
+	</insert>
+	<update id="updateStockRecycle" parameterType="StockRecycle">
+		UPDATE stock_recycle SET recycleTime = #{recycleTime},
+		operatorId = #{operatorId},
+		warehouseId = #{warehouseId},
+		remark = #{remark}
+		WHERE stockRecycleId = #{stockRecycleId}
+	</update>
+	<select id="selectById" parameterType="int" resultMap="StockRecycleMap">
+		SELECT stockRecycleId, operatorId, installerId, terminalSn, operateTime, customerAccount, recycleTime, warehouseId, remark
+		FROM stock_recycle
+		WHERE stockRecycleId = #{stockRecycleId}
+	</select>
+	<select id="selectByCondition" parameterType="StockRecycleQuery" resultType="StockRecycle">
+		SELECT stockRecycleId, operatorId, installerId, terminalSn, operateTime, customerAccount, recycleTime, warehouseId, remark
+		FROM stock_recycle
+		<where>
+			<if test="terminalSn != null and terminalSn != ''">
+				AND terminalSn LIKE CONCAT('%',#{terminalSn},'%')
+			</if>
+			<if test="operatorIdList != null and operatorIdList.size > 0">
+				AND operatorId IN
+				<foreach collection="operatorIdList" item="operatorId2" open="(" separator="," close=")">
+					#{operatorId2}
+				</foreach>
+			</if>
+			<if test="warehouseIdList != null and warehouseIdList.size > 0">
+				AND warehouseId IN
+				<foreach collection="warehouseIdList" item="warehouseId2" open="(" separator="," close=")">
+					#{warehouseId2}
+				</foreach>
+			</if>
+			<if test="startTime != null">
+				AND operateTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND operateTime &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+</mapper>

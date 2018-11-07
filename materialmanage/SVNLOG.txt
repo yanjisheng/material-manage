@@ -1,0 +1,55 @@
+483739	18/11/5 上午10:46	4	jisheng.yan	修改代码修改代码
+483619	18/11/2 下午2:52	2	jisheng.yan	修改注释修改注释
+483597	18/11/2 下午2:03	4	jisheng.yan	添加定时任务模块
+*483435	18/11/1 下午2:39	5	jisheng.yan	修改少量bug修改少量bug
+483425	18/11/1 上午11:37	13	jisheng.yan	mybatis配置二级缓存
+483360	18/10/31 下午5:08	2	jisheng.yan	修改异常处理方式
+483232	18/10/30 下午5:32	3	jisheng.yan	只是想提一下代码
+483229	18/10/30 下午5:13	2	jisheng.yan	修改密钥修改密钥
+483215	18/10/30 下午4:39	2	jisheng.yan	只是想提一下代码
+483201	18/10/30 下午3:28	3	jisheng.yan	修改异常处理和swagger版本
+483166	18/10/30 下午1:44	9	jisheng.yan	修改mapper中连接字符串的bug
+483162	18/10/30 下午12:52	14	jisheng.yan	修改QueryModel中重写的set方法中的bug
+483095	18/10/29 下午5:37	2	jisheng.yan	只是想提一下代码
+483093	18/10/29 下午5:25	3	jisheng.yan	增加swagger配置增加swagger配置
+483075	18/10/29 下午4:40	14	jisheng.yan	增加品牌和仓库的查询条件
+483051	18/10/29 下午3:25	6	jisheng.yan	备件单备件单model dao mapper service
+483042	18/10/29 下午2:57	7	jisheng.yan	报废单报废单model dao mapper service
+483031	18/10/29 下午2:29	7	jisheng.yan	领用单和回收单增加装维人员id字段，表结构、model、dao、service层代码对应修改
+483019	18/10/29 上午11:36	8	jisheng.yan	返修单model dao service返修单model dao service
+482784	18/10/25 下午3:22	9	jisheng.yan	领用单、回收单Controller 增加针对异常的日志输出
+482691	18/10/24 下午5:31	3	jisheng.yan	回收单model dao回收单model dao
+482684	18/10/24 下午5:14	10	jisheng.yan	回收单model dao回收单model dao
+482609	18/10/24 上午11:43	7	jisheng.yan	修改service层调拨单的bug，增加品牌管理controller层
+482507	18/10/23 下午5:26	1	jisheng.yan	就是想提一下代码
+482504	18/10/23 下午5:23	1	jisheng.yan	就是想提一下代码
+482499	18/10/23 下午5:14	17	jisheng.yan	领用单Service和Controller层 Service层增加日志
+482445	18/10/23 上午11:38	13	jisheng.yan	调拨单Service和Controller层
+482373	18/10/22 下午5:31	7	jisheng.yan	分页查询排序字段增加防SQL注入 日期时间转换注册为Spring Component，以后支持Date直接入参
+482313	18/10/22 下午2:49	15	jisheng.yan	品牌管理Service层 调拨单Mapper层
+482116	18/10/19 下午5:16	13	jisheng.yan	库存查询、入库controller丶
+482040	18/10/19 上午11:39	14	jisheng.yan	终端库存和入库单Service，修改PageHelper的用法
+481953	18/10/18 下午5:37	12	jisheng.yan	终端库存和入库单Mapper和Model
+481893	18/10/18 下午12:52	6	jisheng.yan	终端库存Mapper终端库存Mapper
+481826	18/10/17 下午3:00	4	jisheng.yan	查询仓库对应员工
+481813	18/10/17 下午1:27	4	jisheng.yan	修改数据库用户名
+481805	18/10/17 下午12:31	7	jisheng.yan	分页查询仓库列表分页查询仓库列表
+481804	18/10/17 下午12:09	8	jisheng.yan	只是想提一下代码而已
+481791	18/10/17 上午10:21	6	jisheng.yan	把token相关配置转移到SpringBoot配置文件中
+481739	18/10/16 下午5:20	13	jisheng.yan	仓库和员工对应关系以及仓库管理Controller
+481680	18/10/16 上午11:30	7	jisheng.yan	增加修改密码Controller
+481600	18/10/15 下午5:37	18	jisheng.yan	UserController增加注册功能并进行测试 UserDao增加修改信息、修改密码、离职等功能
+481570	18/10/15 下午3:28	13	jisheng.yan	用户登录和注册service，以及token验证工具类
+481508	18/10/15 上午9:50	1	jisheng.yan	修改文件名修改文件名修改文件名
+481507	18/10/15 上午9:49	1	jisheng.yan	修改文件名修改文件名修改文件名
+481359	18/10/12 下午5:23	4	jisheng.yan	增加查询仓库历史的service
+481346	18/10/12 下午4:20	2	jisheng.yan	修改bug，目前可以运行行行行行行行
+481332	18/10/12 下午3:32	2	jisheng.yan	修改程序入口类名
+481327	18/10/12 下午3:07	2	jisheng.yan	修改程序入口类名
+481326	18/10/12 下午3:06	1	jisheng.yan	修改程序入口类名
+481323	18/10/12 下午2:51	14	jisheng.yan	继续写Mapper和Service层代码，Controller层建立空文件
+481270	18/10/12 上午9:23	3	jisheng.yan	时间格式化和密码加密工具类
+481223	18/10/11 下午5:06	14	jisheng.yan	建表、编写部分品牌管理Mapper层代码
+481101	18/10/10 下午5:45	2	jisheng.yan	建表sql建表sql建表sql建表sql建表sql
+481077	18/10/10 下午4:21	24	jisheng.yan	初始导入初始导入初始导入初始导入初始导入
+481076	18/10/10 下午4:21	2	jisheng.yan	初始导入初始导入初始导入初始导入初始导入

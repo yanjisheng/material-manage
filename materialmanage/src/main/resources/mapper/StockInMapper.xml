@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.StockInDao">
+	<resultMap type="StockIn" id="StockInMap">
+		<id column="id" property="id"/>
+		<association property="operator" column="operatorId" javaType="User" 
+				select="com.zznode.materialmanage.dao.UserDao.selectById"/>
+		<association property="warehouse" column="warehouseId" javaType="Warehouse" 
+				select="com.zznode.materialmanage.dao.WarehouseDao.selectById"/>
+		<association property="brand" column="brandId" javaType="Brand" 
+				select="com.zznode.materialmanage.dao.BrandDao.selectById"/>
+		<collection property="snList" column="stockInId" ofType="String" select="selectSnListByStockInId"/>
+	</resultMap>
+	<insert id="addStockIn" parameterType="StockIn">
+		INSERT INTO stock_in(stockInId, operatorId, operateTime, warehouseId, brandId, remark)
+		VALUES(#{stockInId}, #{operatorId}, #{operateTime}, #{warehouseId}, #{brandId}, #{remark})
+	</insert>
+	<insert id="addStockInSnList" parameterType="StockIn">
+		INSERT INTO stock_in_sn(stockInId, terminalSn)
+		VALUES
+		<foreach collection="snList" item="sn" separator=",">
+			(#{stockInId}, #{sn})
+		</foreach>
+	</insert>
+	<select id="selectById" parameterType="int" resultMap="StockInMap">
+		SELECT id, stockInId, operatorId, operateTime, warehouseId, brandId, remark
+		FROM stock_in
+		WHERE id = #{id}
+	</select>
+	<select id="selectByCondition" resultType="StockIn">
+		SELECT id, stockInId, operatorId, operateTime, warehouseId, brandId, remark
+		FROM stock_in
+		<where>
+			<if test="condition.stockInId != null">
+				AND stockInId = #{condition.stockInId}
+			</if>
+			<if test="condition.startTime != null">
+				AND operateTime &gt;= #{condition.startTime}
+			</if>
+			<if test="condition.endTime != null">
+				AND operateTime &lt;= #{condition.endTime}
+			</if>
+			<if test="condition.operatorIdList != null and condition.operatorIdList.size > 0">
+				AND operatorId IN
+				<foreach collection="condition.operatorIdList" item="operatorId" open="(" separator="," close=")">
+					#{operatorId}
+				</foreach>
+			</if>
+			<if test="condition.warehouseIdList != null and condition.warehouseIdList.size > 0">
+				AND warehouseId IN
+				<foreach collection="condition.warehouseIdList" item="warehouseId" open="(" separator="," close=")">
+					#{warehouseId}
+				</foreach>
+			</if>
+			<if test="condition.brandIdList != null and condition.brandIdList.size > 0">
+				AND brandId IN
+				<foreach collection="condition.brandIdList" item="brandId" open="(" separator="," close=")">
+					#{brand}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<!-- 关联查询 -->
+	<select id="selectSnListByStockInId" parameterType="int" resultType="String">
+		SELECT terminalSn FROM stock_in_sn
+		WHERE stockInId = #{stockInId}
+	</select>
+</mapper>

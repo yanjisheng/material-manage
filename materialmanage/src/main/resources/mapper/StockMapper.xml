@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.StockDao">
+	<resultMap type="Stock" id="BasicStockMap">
+		<result property="status" column="status"/>
+		<association property="statusName" column="status" javaType="String" 
+				select="com.zznode.materialmanage.dao.TerminalStatusDao.selectStatusNameByCode"/>
+	</resultMap>
+	<resultMap type="Stock" id="ExtendStockMap" extends="BasicStockMap">
+		<association property="brand" column="brandId" javaType="Brand" 
+				select="com.zznode.materialmanage.dao.BrandDao.selectById"/>
+		<association property="warehouse" column="warehouseId" javaType="Warehouse" 
+				select="com.zznode.materialmanage.dao.WarehouseDao.selectById"/>
+	</resultMap>
+	<insert id="addStock" parameterType="Stock">
+		INSERT INTO stock(terminalSn, brandId, warehouseId, status)
+		VALUES(#{terminalSn}, #{brandId}, #{warehouseId}, #{status})
+	</insert>
+	<insert id="addStockList">
+		INSERT INTO stock(terminalSn, brandId, warehouseId, status)
+		VALUES
+		<foreach collection="stockList" item="stock" separator=",">
+			(#{stock.terminalSn}, #{stock.brandId}, #{stock.warehouseId}, #{stock.status})
+		</foreach>
+	</insert>
+	<select id="selectById" parameterType="int" resultMap="ExtendStockMap">
+		SELECT terminalId, terminalSn, brandId, warehouseId, status
+		FROM stock
+		WHERE terminalId = #{terminalId}
+	</select>
+	<select id="selectBySn" parameterType="String" resultMap="ExtendStockMap">
+		SELECT terminalId, terminalSn, brandId, warehouseId, status
+		FROM stock
+		WHERE terminalSn = #{terminalSn}
+	</select>
+	<select id="selectByCondition" resultMap="BasicStockMap">
+		SELECT terminalId, terminalSn, brandId, warehouseId, status
+		FROM stock
+		<where>
+			<if test="condition.terminalSn != null and condition.terminalSn != ''">
+				AND terminalSn LIKE CONCAT('%',#{condition.terminalSn},'%')
+			</if>
+			<if test="condition.brandIdList != null and condition.brandIdList.size > 0">
+				AND brandId IN 
+				<foreach collection="condition.brandIdList" item="brandId" open="(" separator="," close=")">
+					#{brandId}
+				</foreach>
+			</if>
+			<if test="condition.warehouseIdList != null and condition.warehouseIdList.size > 0">
+				AND warehouseId IN 
+				<foreach collection="condition.warehouseIdList" item="warehouseId" open="(" separator="," close=")">
+					#{warehouseId}
+				</foreach>
+			</if>
+			<if test="condition.statusList != null and condition.statusList.size > 0">
+				AND status IN 
+				<foreach collection="condition.statusList" item="status" open="(" separator="," close=")">
+					#{status}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	<update id="updateStock" parameterType="Stock">
+		UPDATE stock SET warehouseId = #{warehouseId}
+		<if test="status != null">
+			, status = #{status}
+		</if>
+		WHERE terminalSn = #{terminalSn}
+	</update>	
+</mapper>

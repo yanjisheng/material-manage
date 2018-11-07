@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.UserDao">
+	<cache/>
+	<select id="selectById" resultType="User">
+		SELECT userId, loginName, name, staffNo, phone, employDate, status
+		FROM user
+		WHERE userId = #{userId}
+	</select>
+	<select id="selectByLoginName" resultType="User">
+		SELECT userId, loginName, name, staffNo, phone, employDate, status
+		FROM user
+		WHERE loginName = #{loginName}
+	</select>
+	<select id="getPasswordById" resultType="String">
+		SELECT hashPassword
+		FROM user
+		WHERE userId = #{userId}
+	</select>
+	<insert id="addOne" parameterType="User">
+		INSERT INTO user(loginName, hashPassword, name, staffNo, phone, employDate)
+		VALUES(#{loginName}, #{hashPassword}, #{name}, #{staffNo}, #{phone}, #{employDate})
+	</insert>
+	<delete id="deleteById">
+		DELETE FROM user
+		WHERE userId = #{userId}
+	</delete>
+	<update id="changePassword" parameterType="User">
+		UPDATE user SET hashPassword = #{hashPassword}
+		WHERE userId = #{userId}
+	</update>
+	<update id="updateInfo" parameterType="User">
+		UPDATE user 
+		SET name = #{name},
+		staffNo = #{staffNo},
+		phone = #{phone},
+		employDate = #{employDate}
+		<if test="status != null">
+			,status = #{status}
+		</if>
+		WHERE userId = #{userId}
+	</update>
+</mapper>

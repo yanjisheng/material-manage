@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.StockUseDao">
+	<resultMap id="StockUseMap" type="StockUse">
+		<id column="stockUseId" property="stockUseId"/>
+		<association column="operatorId" property="operator" javaType="User" 
+				select="com.zznode.materialmanage.dao.UserDao.selectById"/>
+		<association column="installerId" property="installer" javaType="User"
+				select="com.zznode.materialmanage.dao.UserDao.selectById"/>
+	</resultMap>
+	<insert id="addStockUse" parameterType="StockUse">
+		INSERT INTO stock_use(operatorId, installerId, terminalSn, operateTime, customerAccount, installTime, remark)
+		VALUES(#{operatorId}, #{installerId}, #{terminalSn}, #{operateTime}, #{customerAccount}, #{installTime}, #{remark})
+	</insert>
+	<update id="updateStockUse" parameterType="StockUse">
+		UPDATE stock_use SET customerAccount = #{customerAccount},
+		installerId = #{installerId},
+		installTime = #{installTime},
+		remark = #{remark}
+		WHERE stockUseId = #{stockUseId}
+	</update>
+	<select id="selectById" parameterType="int" resultMap="StockUseMap">
+		SELECT stockUseId, operatorId, installerId, terminalSn, operateTime, customerAccount, installTime, remark
+		FROM stock_use
+		WHERE stockUseId = #{stockUseId}
+	</select>
+	<select id="selectByCondition" parameterType="StockUseQuery" resultType="StockUse">
+		SELECT stockUseId, operatorId, installerId, terminalSn, operateTime, customerAccount, installTime, remark
+		FROM stock_use
+		<where>
+			<if test="terminalSn != null and terminalSn != ''">
+				AND terminalSn LIKE CONCAT('%',#{terminalSn},'%')
+			</if>
+			<if test="operatorIdList != null and operatorIdList.size > 0">
+				AND operatorId IN
+				<foreach collection="operatorIdList" item="operatorId2" open="(" separator="," close=")">
+					#{operatorId2}
+				</foreach>
+			</if>
+			<if test="startTime != null">
+				AND operateTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND operateTime &lt;= #{endTime}
+			</if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,47 @@
+#SpringBoot配置文件
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/material_management
+    username: test
+    password: 123456
+  jpa:
+    show-sql: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non-null
+    serialization:
+      fail-on-empty-beans: false
+      fail-on-self-references: false
+server: 
+  port: 8888
+logging:
+  level:
+    root: info
+    com.zznode.materialmanage: debug #生产环境设为info
+  pattern:
+    console: "[%p] %d %t -> %c.%M%n%m%n"
+    file: "[%p] %d %t -> %c.%M%n%m%n"
+  file: MaterialManage.log #日志文件路径
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.zznode.materialmanage.model
+  configuration:
+    auto-mapping-behavior: full
+    jdbc-type-for-null: "NULL"
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    cache-enabled: true #开启mybatis二级缓存，请确保在生产环境不要通过本程序以外的方法操作数据库，或者操作后重启本程序
+    map-underscore-to-camel-case: false
+pagehelper:
+  helper-dialect: mysql
+#自定义配置
+materialmanage:
+  enable-token-auth: true #启用token验证，在生产环境设为true
+  token-key: null #token密钥（8个字符，默认为每次启动时分配随机值）
+  token-valid-hours: 12 #token有效期（小时，默认为10年）
+  
+  
+  
+  

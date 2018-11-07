@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.WarehouseStaffDao">
+	<resultMap type="WarehouseStaff" id="WarehouseStaffMap">
+		<id column="id" property="id"/>
+		<result column="warehouseId" property="warehouseId"/>
+		<result column="userId" property="userId"/>
+		<result column="isManager" property="isManager"/>
+		<association property="warehouse" column="warehouseId" javaType="Warehouse" 
+				select="com.zznode.materialmanage.dao.WarehouseDao.selectById"/>
+		<association property="user" column="userId" javaType="User" 
+				select="com.zznode.materialmanage.dao.UserDao.selectById"/>
+	</resultMap>
+	<insert id="addOne" parameterType="WarehouseStaff">
+		INSERT INTO warehouse_staff(warehouseId, userId, isManager)
+		VALUES(#{warehouseId}, #{userId}, #{isManager})
+	</insert>
+	<select id="selectById" parameterType="int" resultMap="WarehouseStaffMap">
+		SELECT id, warehouseId, userId, isManager
+		FROM warehouse_staff
+		WHERE id = #{id}
+	</select>
+	<select id="selectByCondition" parameterType="WarehouseStaff" resultMap="WarehouseStaffMap">
+		SELECT id, warehouseId, userId, isManager
+		FROM warehouse_staff
+		<where>
+			<if test="warehouseId != null">
+				AND warehouseId = #{warehouseId}
+			</if>
+			<if test="userId != null">
+				AND userId = #{userId}
+			</if>
+			<if test="isManager != null">
+				AND isManager = #{isManager}
+			</if>
+		</where>
+	</select>
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM warehouse_staff 
+		WHERE id = #{id}
+	</delete>
+</mapper>

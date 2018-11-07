@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zznode.materialmanage.dao.WarehouseDao">
+	<cache/>
+	<select id="selectById" parameterType="int" resultType="Warehouse">
+		SELECT warehouseId, oldWarehouseId, warehouseName, warehouseType, provinceCode, cityCode, address, createTime, status
+		FROM warehouse WHERE warehouseId = #{warehouseId}
+	</select>
+	<select id="selectByCondition" parameterType="WarehouseQuery" resultType="Warehouse">
+		SELECT warehouseId, oldWarehouseId, warehouseName, warehouseType, provinceCode, cityCode, address, createTime, status
+		FROM warehouse
+		<where>
+			<if test="warehouseType != null and warehouseType != ''">
+				AND warehouseType LIKE CONCAT('%',#{warehouse.warehouseType},'%')
+			</if>
+			<if test="warehouseName != null and warehouseName != ''">
+				AND warehouseName LIKE CONCAT('%',#{warehouse.warehouseName},'%')
+			</if>
+			<if test="provinceCode != null and provinceCode != ''">
+				AND provinceCode = #{warehouse.provinceCode}
+			</if>
+			<if test="cityCode != null and cityCode != ''">
+				AND cityCode = #{warehouse.cityCode}
+			</if>
+			<if test="address != null and address != ''">
+				AND address LIKE CONCAT('%',#{warehouse.address},'%')
+			</if>
+			<if test="startTime != null">
+				AND createTime &gt;= #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND createTime &lt;= #{endTime}
+			</if>
+			<if test="status == 1">
+				AND status = 1
+			</if>
+		</where>
+	</select>
+	<insert id="addOne" parameterType="Warehouse">
+		INSERT INTO warehouse(oldWarehouseId, warehouseName, warehouseType, provinceCode, cityCode, address, createTime) 
+		VALUES(#{oldWarehouseId}, #{warehouseName}, #{warehouseType}, #{provinceCode}, #{cityCode}, #{address}, #{createTime})
+	</insert>
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM warehouse WHERE warehouseId = #{warehouseId}
+	</delete>
+	<update id="updateStatus">
+		UPDATE warehouse SET status = #{status}
+		WHERE warehouseId = #{warehouseId}
+	</update>
+</mapper>
